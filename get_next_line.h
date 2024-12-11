@@ -6,7 +6,7 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:40:26 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/09 18:50:45 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:43:02 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,32 @@
 # include <unistd.h>
 # include <string.h>
 # include <fcntl.h>
+# include <stdlib.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
 /* get next line */
 char	*get_next_line(int fd);
-/*procura um caracter numa string*/
-char	*ft_strchr(const char *s, int c);
-/*duplica uma string alocando memoria pra ela*/
-char	*ft_strdup(const char *s);
-/*Retorna o tamanho da string*/
-size_t	ft_strlen(const char *s);
-/*cria uma substring apartir de outra string*/
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-/*concatena s1 e s2 usando malloc*/
-char	*ft_strjoin(char const *s1, char const *s2);
+
+/* Lista */
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}					t_list;
+
+/*cria um node(elemento da lista)*/
+t_list	*ft_lstnew(void *content);
+/*apaga 1 node e todos pra frente*/
+void	ft_lstclear(t_list **lst, void (*del)(void *));
+/*adiciona um node no fim da linked list*/
+void	ft_lstadd_back(t_list **lst, t_list *new);
+/*conta o numero de nodes*/
+int		ft_lstsize(t_list *lst);
+/*retorna o ultimo node da lista*/
+t_list	*ft_lstlast(t_list *lst);
+/*encontra o \n ou o \0*/
+char	*ft_line_finder(int fd, t_list **line);
 #endif

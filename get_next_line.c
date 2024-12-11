@@ -6,7 +6,7 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:51:28 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/09 18:45:07 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:44:11 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,25 @@
 
 char	*get_next_line(int fd)
 {
-	int		file;
-	char	text;
+	static t_list	*line;
 
-	if (!fd)
-		return (NULL);
-	file = open(fd, O_RDONLY);
-	if (file == -1)
-	{
-		write(2, "Cannot read file.\n", 18);
-		return (NULL);
-	}
-	while (read(file, &text, 1) != '\n')
-		write(1, &text, 1);
-	if (read(file, &text, 1) == '\n')
-		write(1, &text, 1);
-	close(file);
+	line = NULL;
+	ft_lstnew
 }
 
-/* int main()
-{
-	get_next_line('ascii.txt');
-} */
+int main() {
+	int fd = open("ascii.txt", O_RDONLY);
+	if (fd == -1) {
+		perror("Erro ao abrir o arquivo");
+		return 1;
+	}
+	char *linha = get_next_line(fd);
+	if (linha) {
+		printf("Linha lida: %s\n", linha);
+		free(linha);  // Não esqueça de liberar a memória alocada
+	} else {
+		printf("Erro ao ler a linha ou fim do arquivo alcançado\n");
+	}
+	close(fd);
+	return 0;
+}

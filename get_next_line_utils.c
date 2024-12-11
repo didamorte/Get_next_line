@@ -6,94 +6,86 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 18:43:32 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/09 18:46:40 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/11 16:42:25 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(const char *s, int c)
+t_list	*ft_lstnew(void *content)
 {
-	while (*s)
-	{
-		if (*s == (char)c)
-			return ((char *)&*s);
-		s++;
-	}
-	if (*s == (char)c)
-		return ((char *)&*s);
-	return (NULL);
-}
+	t_list	*node;
 
-char	*ft_strdup(const char *s)
-{
-	char	*d;
-	int		i;
-
-	i = ft_strlen(s) + 1;
-	d = malloc(i);
-	if (d == NULL)
+	node = (t_list *)malloc(sizeof(t_list));
+	if (!node)
 		return (NULL);
-	ft_memcpy(d, s, i);
-	return (d);
+	node->content = content;
+	node->next = NULL;
+	return (node);
 }
 
-size_t	ft_strlen(const char *s)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
+{
+	t_list	*tmp;
+
+	if (!lst || !del)
+		return ;
+	while (*lst)
+	{
+		tmp = (*lst)->next;
+		ft_lstdelone(*lst, del);
+		(*lst) = tmp;
+	}
+}
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*last;
+
+	if (!(lst || new))
+		return ;
+	if (!*lst)
+		*lst = new;
+	else
+	{
+		last = ft_lstlast(*lst);
+		last->next = new;
+	}
+}
+
+int	ft_lstsize(t_list *lst)
 {
 	int	i;
 
 	i = 0;
-	while (s[i])
+	while (lst)
 	{
+		lst = lst->next;
 		i++;
 	}
 	return (i);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+t_list	*ft_lstlast(t_list *lst)
 {
-	char	*str;
-	size_t	i;
-
-	if (!s)
+	if (!lst)
 		return (NULL);
-	if (start > ft_strlen(s))
-		return (ft_strdup(""));
-	if (len > ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	str = (char *)malloc((len + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	i = 0;
-	while (i < len)
+	while (lst->next != NULL)
 	{
-		str[i] = s[start + i];
-		i++;
+		lst = lst->next;
 	}
-	str[i] = '\0';
-	return (str);
+	return (lst);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+void	del(void *content)
 {
-	char	*str;
-	int		len1;
-	int		len2;
-	int		i;
+	free(content);
+}
 
-	if ((!s1 && !s2) || !s1 || !s2)
-		return (NULL);
-	len1 = ft_strlen(s1);
-	len2 = ft_strlen(s2);
-	str = (char *)malloc((len1 + len2 + 1) * sizeof(char));
-	if (!str)
-		return (NULL);
-	i = -1;
-	while (s1[++i])
-		str[i] = s1[i];
-	i = -1;
-	while (s2[++i])
-		str[len1++] = s2[i];
-	str[len1] = '\0';
-	return (str);
+char	*ft_line_finder(int fd, t_list **line)
+{
+	int	i;
+
+	i = 0;
+	while (read(fd, , BUFFER_SIZE))
 }
