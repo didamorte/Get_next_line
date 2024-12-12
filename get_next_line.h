@@ -6,7 +6,7 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:40:26 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/11 16:43:02 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/12 16:58:12 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,29 +19,18 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 42
+#  define BUFFER_SIZE 10
 # endif
 
 /* get next line */
 char	*get_next_line(int fd);
 
-/* Lista */
-typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}					t_list;
+char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strchr(const char *string, int searchedChar );
 
-/*cria um node(elemento da lista)*/
-t_list	*ft_lstnew(void *content);
-/*apaga 1 node e todos pra frente*/
-void	ft_lstclear(t_list **lst, void (*del)(void *));
-/*adiciona um node no fim da linked list*/
-void	ft_lstadd_back(t_list **lst, t_list *new);
-/*conta o numero de nodes*/
-int		ft_lstsize(t_list *lst);
-/*retorna o ultimo node da lista*/
-t_list	*ft_lstlast(t_list *lst);
-/*encontra o \n ou o \0*/
-char	*ft_line_finder(int fd, t_list **line);
+void	ft_bzero(void *s, size_t n);
+void	*ft_calloc(size_t elementCount, size_t elementSize);
+
+size_t	ft_strlen(const char *theString);
+
 #endif

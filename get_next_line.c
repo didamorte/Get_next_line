@@ -6,33 +6,32 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:51:28 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/11 16:44:11 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/12 17:25:22 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*get_next_line(int fd)
+char	*ft_file(int fd, char *res)
 {
-	static t_list	*line;
-
-	line = NULL;
-	ft_lstnew
+	char	*buffer;
+	int		last_byte;
+	
+	buffer = ft_calloc(BUFFER_SIZE, sizeof(char));
+	
 }
 
-int main() {
-	int fd = open("ascii.txt", O_RDONLY);
-	if (fd == -1) {
-		perror("Erro ao abrir o arquivo");
-		return 1;
-	}
-	char *linha = get_next_line(fd);
-	if (linha) {
-		printf("Linha lida: %s\n", linha);
-		free(linha);  // Não esqueça de liberar a memória alocada
-	} else {
-		printf("Erro ao ler a linha ou fim do arquivo alcançado\n");
-	}
-	close(fd);
-	return 0;
+char	*get_next_line(int fd)
+{
+	char		*line;
+	static char *buffer;
+
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
+	buffer = ft_file(fd, buffer);
+	if (!buffer)
+		return (NULL);
+	line = ft_newline();
+	buffer = ft_next_line();
+	return (line);
 }
