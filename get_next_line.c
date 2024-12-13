@@ -6,7 +6,7 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:51:28 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/13 17:17:38 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:27:28 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,10 +109,28 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
-/* int main()
+int	main(int ac, char **av)
 {
-	int fd = open("ascii.txt", O_RDONLY);
+	char	*line;
+	int		fd;
+	int		i;
 
-	printf("linha: %s", get_next_line(fd));
+	(void)ac;
+	fd = open(av[1], O_RDONLY);
+	if (!fd)
+		return (1);
+	i = 0;
+	while (i++ < 10000)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		if (1)
+			printf("%s", line);
+		else
+			printf("line [%02d]: %s", i, line);
+		free(line);
+	}
+	close(fd);
 	return (0);
-} */
+}
