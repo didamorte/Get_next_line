@@ -6,14 +6,38 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:51:28 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/12 17:25:22 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/13 17:17:38 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+/* resetamos o buffer para o inicio da proxima linha */
+char	*ft_next_line(char *buffer)
+{
+	char	*line;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (!buffer[i])
+	{
+		free(buffer);
+		return (NULL);
+	}
+	line = ft_calloc((ft_strlen(buffer) - i + 1), sizeof(char));
+	i++;
+	j = 0;
+	while (buffer[i])
+		line[j++] = buffer[i++];
+	free(buffer);
+	return (line);
+}
+
 /* aloca a linha ate o \n */
-char	*ft_line(char *buffer)
+char	*ft_newline(char *buffer)
 {
 	char	*line;
 	int		i;
@@ -50,9 +74,8 @@ char	*ft_file(int fd, char *result)
 {
 	char	*buffer;
 	int		already_read;
-	
-	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	already_read = 1;
 	while (already_read > 0)
 	{
@@ -74,9 +97,9 @@ char	*ft_file(int fd, char *result)
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char *buffer;
+	static char	*buffer;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = ft_file(fd, buffer);
 	if (!buffer)
@@ -85,3 +108,11 @@ char	*get_next_line(int fd)
 	buffer = ft_next_line(buffer);
 	return (line);
 }
+
+/* int main()
+{
+	int fd = open("ascii.txt", O_RDONLY);
+
+	printf("linha: %s", get_next_line(fd));
+	return (0);
+} */
