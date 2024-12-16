@@ -65,7 +65,8 @@ char	*ft_free(char *result, char *buffer)
 	char	*temp;
 
 	temp = ft_strjoin(result, buffer);
-	free(result);
+	if (result)
+		free(result);
 	return (temp);
 }
 
@@ -75,6 +76,8 @@ char	*ft_file(int fd, char *result)
 	char	*buffer;
 	int		already_read;
 
+	if (!result)
+		result = ft_calloc(1, 1);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	already_read = 1;
 	while (already_read > 0)
@@ -99,7 +102,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	static char	*buffer;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	buffer = ft_file(fd, buffer);
 	if (!buffer)
@@ -109,28 +112,57 @@ char	*get_next_line(int fd)
 	return (line);
 }
 
+int count_lines(const char *filename);
+
 int	main(int ac, char **av)
 {
 	char	*line;
 	int		fd;
 	int		i;
+	int		j;
 
 	(void)ac;
 	fd = open(av[1], O_RDONLY);
-	if (!fd)
+	if (fd < 0)
 		return (1);
-	i = 0;
-	while (i++ < 10000)
+	j = 0;
+	i = count_lines(av[1]) + 1;
+	while (j++ < i)
 	{
 		line = get_next_line(fd);
 		if (!line)
 			break ;
-		if (1)
-			printf("%s", line);
 		else
-			printf("line [%02d]: %s", i, line);
+			printf("line [%02d]: %s\n", j, line);
 		free(line);
+		usleep(25000);  // Delay for 25 milliseconds
 	}
 	close(fd);
 	return (0);
+}
+
+int count_lines(const char *filename)
+{
+	int fd = open(filename, O_RDONLY);
+	if (fd < 0) {
+		perror("Failed to open file");
+		return -1;
+	}
+	int count = 0;
+	char buffer[1024];
+	ssize_t bytes_read;
+	while ((bytes_read = read(fd, buffer, sizeof(buffer))) > 0) {
+		for (ssize_t i = 0; i < bytes_read; i++) {
+			if (buffer[i] == '\n') {
+				count++;
+			}
+		}
+	}
+	if (bytes_read < 0) {
+		perror("Failed to read file");
+		close(fd);
+		return -1;
+	}
+	close(fd);
+	return count;
 }
