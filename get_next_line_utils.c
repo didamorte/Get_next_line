@@ -6,7 +6,7 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 18:43:32 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/13 17:15:27 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:50:24 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,5 +82,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	while (s2[++i])
 		str[len1++] = s2[i];
 	str[len1] = '\0';
+	if (str[0] == '\0')
+	{
+		free(str);
+		return (NULL);
+	}
 	return (str);
 }

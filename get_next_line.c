@@ -6,7 +6,7 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:51:28 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/13 17:27:28 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/18 19:59:26 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*ft_newline(char *buffer)
 		line[i] = buffer[i];
 		i++;
 	}
-	if (buffer[i] && buffer[i] != '\n')
+	if (buffer[i] && buffer[i] == '\n')
 		line[i++] = '\n';
 	return (line);
 }
@@ -65,8 +65,7 @@ char	*ft_free(char *result, char *buffer)
 	char	*temp;
 
 	temp = ft_strjoin(result, buffer);
-	if (result)
-		free(result);
+	free(result);
 	return (temp);
 }
 
@@ -85,6 +84,7 @@ char	*ft_file(int fd, char *result)
 		already_read = read(fd, buffer, BUFFER_SIZE);
 		if (already_read == -1)
 		{
+			free(result);
 			free(buffer);
 			return (NULL);
 		}
@@ -122,7 +122,7 @@ int	main(int ac, char **av)
 	int		j;
 
 	(void)ac;
-	fd = open(av[1], O_RDONLY);
+	fd = open(av[1], O_RDWR);
 	if (fd < 0)
 		return (1);
 	j = 0;
@@ -133,7 +133,7 @@ int	main(int ac, char **av)
 		if (!line)
 			break ;
 		else
-			printf("line [%02d]: %s\n", j, line);
+			printf("line [%02d]: %s", j, line);
 		free(line);
 		usleep(25000);  // Delay for 25 milliseconds
 	}
