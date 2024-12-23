@@ -6,7 +6,7 @@
 /*   By: diogribe <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 17:51:28 by diogribe          #+#    #+#             */
-/*   Updated: 2024/12/18 19:59:26 by diogribe         ###   ########.fr       */
+/*   Updated: 2024/12/23 14:47:30 by diogribe         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,11 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	{
+		free(buffer);
+		buffer = NULL;
 		return (NULL);
+	}
 	buffer = ft_file(fd, buffer);
 	if (!buffer)
 		return (NULL);
@@ -111,7 +115,7 @@ char	*get_next_line(int fd)
 	buffer = ft_next_line(buffer);
 	return (line);
 }
-
+/* 
 int count_lines(const char *filename);
 
 int	main(int ac, char **av)
@@ -165,4 +169,4 @@ int count_lines(const char *filename)
 	}
 	close(fd);
 	return count;
-}
+} */
